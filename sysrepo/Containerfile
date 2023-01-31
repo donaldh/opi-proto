@@ -1,0 +1,32 @@
+FROM fedora:37
+
+RUN dnf install -y git netopeer2-cli netopeer2-server netopeer2 sysrepo-devel sysrepo-tools
+
+WORKDIR /
+
+ARG OC_REPO
+RUN git clone $OC_REPO openconfig
+RUN sysrepoctl -i openconfig/third_party/ietf/iana-if-type.yang
+
+WORKDIR /openconfig/release/models
+
+RUN sysrepoctl -s .:types:policy:local-routing:interfaces:bgp:mpls:ospf:isis \
+    -i network-instance/openconfig-network-instance.yang \
+    -i network-instance/openconfig-network-instance-types.yang \
+    -i interfaces/openconfig-if-ethernet.yang \
+    -i vlan/openconfig-vlan.yang \
+    -i aft/openconfig-aft.yang \
+    -i bgp/openconfig-bgp.yang \
+    -i isis/openconfig-isis.yang \
+    -i mpls/openconfig-mpls.yang \
+    -i ospf/openconfig-ospfv2.yang
+
+WORKDIR /
+COPY entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+
+EXPOSE 830/tcp
+ENV PUBKEY=
+ENV V=0
+
+ENTRYPOINT ["/entrypoint.sh"]
