@@ -1,0 +1,11 @@
+- name: Get running config
+  hosts: netconf
+  tasks:
+    - name: netconf get-config
+      ansible.netcommon.netconf_get:
+        source: running
+        display: native
+      register: result
+    - name: print result data
+      ansible.builtin.debug:
+        var: result.output.data
