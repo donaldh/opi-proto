@@ -1,0 +1,38 @@
+* opi-proto – PoC work for the opi-api project
+
+** OpenConfig
+
+*** Netopeer2 Container
+
+Build a netopeer2 image with the OpenConfig YANG models loaded into sysrepo. I am using my fork
+of https://github.com/openconfig/public for a couple of ~openconfig-vlan~ fixes:
+
+#+begin_src sh :results output
+git clone https://github.com/donaldh/opi-proto.git
+cd sysrepo
+make image OC_REPO=https://github.com/donaldh/openconfig-public.git
+#+end_src
+
+Run the netopeer2 image:
+
+#+begin_src sh :results output
+make run PUBKEY="..."
+#+end_src
+
+*** Ansible playbooks
+
+Run sample ansible playbooks for netconf operations:
+
+**** Prerequisites
+
+#+begin_src sh :results output
+pip install ncclient xmltodict
+#+end_src
+
+Copy ~ansible/inventory.tmpl~ to ~ansible/inventory.yaml~ and modify to contain your inventory
+settings.
+
+#+begin_src sh :results output
+cd ansible
+ansible-playbook -i inventory.yaml edit-interfaces.yaml
+#+end_src
