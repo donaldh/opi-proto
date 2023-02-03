@@ -1,6 +1,4 @@
-FROM fedora:37
-
-RUN dnf install -y git netopeer2-cli netopeer2-server netopeer2 sysrepo-devel sysrepo-tools
+FROM netopeer2:latest
 
 WORKDIR /
 

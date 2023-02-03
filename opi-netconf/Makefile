@@ -1,11 +1,11 @@
 PODMAN ?= podman
-NAME=opi-networking-api
+NAME=opi-netconf
 VERSION=latest
 OC_REPO ?= https://github.com/openconfig/public.git
 CNAME ?= opi
 V ?= 0
 
-image:	## Build OPI container
+image:	## Build OPI image
 	$(PODMAN) build -t $(NAME):$(VERSION) --build-arg OC_REPO=${OC_REPO} .
 
 run:	## Run the OPI container

@@ -1,0 +1,20 @@
+FROM fedora:37
+
+RUN dnf install -y git gcc make cmake
+RUN dnf install -y pcre2-devel
+RUN dnf install -y gcc-c++ openssl-devel openssl-perl libssh-devel
+
+RUN mkdir /src
+WORKDIR /src
+
+RUN git clone https://github.com/CESNET/libyang.git
+RUN cd libyang; mkdir build; cd build; cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..; make; make install
+
+RUN git clone https://github.com/sysrepo/sysrepo.git
+RUN cd sysrepo; mkdir build; cd build; cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..; make; make install
+
+RUN git clone https://github.com/CESNET/libnetconf2.git
+RUN cd libnetconf2; mkdir build; cd build; cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..; make; make install
+
+RUN git clone https://github.com/CESNET/netopeer2.git
+RUN cd netopeer2; mkdir build; cd build; cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..; make; make install
