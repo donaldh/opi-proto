@@ -32,6 +32,8 @@ pip install ncclient xmltodict
 Copy ~ansible/inventory.tmpl~ to ~ansible/inventory.yaml~ and modify to contain your inventory
 settings.
 
+**** Running a playbook
+
 #+begin_src sh :results output
 cd ansible
 ansible-playbook -i inventory.yaml edit-interfaces.yaml
