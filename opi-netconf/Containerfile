@@ -9,7 +9,7 @@ RUN sysrepoctl -i openconfig/third_party/ietf/iana-if-type.yang
 WORKDIR /openconfig/release/models
 
 RUN sysrepoctl -s .:types:policy:local-routing:interfaces:bgp:mpls:ospf:isis \
-    -i network-instance/openconfig-network-instance.yang \
+    -i policy/openconfig-policy-types.yang \
     -i network-instance/openconfig-network-instance-types.yang \
     -i interfaces/openconfig-if-ethernet.yang \
     -i vlan/openconfig-vlan.yang \
@@ -17,7 +17,8 @@ RUN sysrepoctl -s .:types:policy:local-routing:interfaces:bgp:mpls:ospf:isis \
     -i bgp/openconfig-bgp.yang \
     -i isis/openconfig-isis.yang \
     -i mpls/openconfig-mpls.yang \
-    -i ospf/openconfig-ospfv2.yang
+    -i ospf/openconfig-ospfv2.yang \
+    -i network-instance/openconfig-network-instance.yang
 
 WORKDIR /
 COPY entrypoint.sh /
