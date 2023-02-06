@@ -2,20 +2,24 @@
 
 ** OpenConfig
 
-*** Netopeer2 Container
+*** Netopeer2 and opi-netconf Containers
 
-Build a netopeer2 image with the OpenConfig YANG models loaded into sysrepo. I am using my fork
-of https://github.com/openconfig/public for a couple of ~openconfig-vlan~ fixes:
+Build a netopeer2 image from source. Then build an opi-netconfig image with the OpenConfig YANG
+models loaded into sysrepo. I am using my fork of https://github.com/openconfig/public for a
+couple of ~openconfig-vlan~ fixes:
 
 #+begin_src sh :results output
 git clone https://github.com/donaldh/opi-proto.git
-cd sysrepo
+cd opi-proto/netopeer2
+make image
+cd ../opi-netconf
 make image OC_REPO=https://github.com/donaldh/openconfig-public.git
 #+end_src
 
-Run the netopeer2 image:
+Run the opi-netconf image:
 
 #+begin_src sh :results output
+cd opi-netconf
 make run PUBKEY="..."
 #+end_src
 
