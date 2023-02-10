@@ -1,0 +1,30 @@
+* Experimental sysrepo python app
+
+** Create new network-instance
+
+The following module change events are recieved when a new network-instance is created.
+
+#+begin_example
+Module change event: change (id 2)
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']: {'name': 'test-instance-7', 'config': {'name': 'test-instance-7', 'type': 'openconfig-network-instance-types:L3VRF'}, 'inter-instance-policies': {'apply-policy': {'config': {'default-import-policy': 'REJECT_ROUTE', 'default-export-policy': 'REJECT_ROUTE'}}}})
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/name: 'test-instance-7')
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/config: {'name': 'test-instance-7', 'type': 'openconfig-network-instance-types:L3VRF'})
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/config/name: 'test-instance-7')
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/config/type: 'openconfig-network-instance-types:L3VRF')
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/inter-instance-policies: {'apply-policy': {'config': {'default-import-policy': 'REJECT_ROUTE', 'default-export-policy': 'REJECT_ROUTE'}}})
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/inter-instance-policies/apply-policy: {'config': {'default-import-policy': 'REJECT_ROUTE', 'default-export-policy': 'REJECT_ROUTE'}})
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/inter-instance-policies/apply-policy/config: {'default-import-policy': 'REJECT_ROUTE', 'default-export-policy': 'REJECT_ROUTE'})
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/inter-instance-policies/apply-policy/config/default-import-policy: 'REJECT_ROUTE')
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/inter-instance-policies/apply-policy/config/default-export-policy: 'REJECT_ROUTE')
+Module change event: done (id 2)
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']: {'name': 'test-instance-7', 'config': {'name': 'test-instance-7', 'type': 'openconfig-network-instance-types:L3VRF'}, 'inter-instance-policies': {'apply-policy': {'config': {'default-import-policy': 'REJECT_ROUTE', 'default-export-policy': 'REJECT_ROUTE'}}}})
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/name: 'test-instance-7')
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/config: {'name': 'test-instance-7', 'type': 'openconfig-network-instance-types:L3VRF'})
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/config/name: 'test-instance-7')
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/config/type: 'openconfig-network-instance-types:L3VRF')
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/inter-instance-policies: {'apply-policy': {'config': {'default-import-policy': 'REJECT_ROUTE', 'default-export-policy': 'REJECT_ROUTE'}}})
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/inter-instance-policies/apply-policy: {'config': {'default-import-policy': 'REJECT_ROUTE', 'default-export-policy': 'REJECT_ROUTE'}})
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/inter-instance-policies/apply-policy/config: {'default-import-policy': 'REJECT_ROUTE', 'default-export-policy': 'REJECT_ROUTE'})
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/inter-instance-policies/apply-policy/config/default-import-policy: 'REJECT_ROUTE')
+ChangeCreated(/openconfig-network-instance:network-instances/network-instance[name='test-instance-7']/inter-instance-policies/apply-policy/config/default-export-policy: 'REJECT_ROUTE')
+#+end_example
