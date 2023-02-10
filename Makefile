@@ -9,7 +9,8 @@ images:	## Build OPI images
 	cd opi-netconf && make image
 
 run:	## Run the OPI container
-	$(PODMAN) run -d --network host -e V=${V} -e PUBKEY="$(PUBKEY)" -v $(PWD)/python:/python:z --name $(CNAME) --rm $(NAME):$(VERSION)
+	$(PODMAN) run -d --privileged --network host -e V=${V} -e PUBKEY="$(PUBKEY)" \
+		-v $(PWD)/python:/python:z --name $(CNAME) --rm $(NAME):$(VERSION)
 
 stop:	## Kill the OPI container
 	$(PODMAN) kill $(CNAME)
