@@ -9,6 +9,7 @@ images:	## Build OPI images
 	cd opi-netconf && make image
 
 run:	## Run the OPI container
+	@if [ -z "$(PUBKEY)" ]; then echo "Please set PUBKEY={key}"; exit 1; fi
 	$(PODMAN) run -d --privileged --network host -e V=${V} -e PUBKEY="$(PUBKEY)" \
 		-v $(PWD)/python:/python:z --name $(CNAME) --rm $(NAME):$(VERSION)
 
