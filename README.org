@@ -1,0 +1,9 @@
+* opi-proto – PoC work for the opi-api project
+
+** OpenConfig / Netconf YANG
+
+- [[netconf/][netconf prototype with netopeer2 and sysrepo]]
+
+** Netlink
+
+- [[netlink/][DPUs and netlink]]

@@ -1,4 +1,4 @@
-* opi-proto – PoC work for the opi-api project
+* netconf prototype for opi-api
 
 ** OpenConfig
 

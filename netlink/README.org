@@ -1,0 +1,17 @@
+* Using netlink to mirror state to DPU hardware
+
+All Linux user space applications use netlink messages, either directly or indirectly, to
+program the kernel networking stack. Netlink provides fine-grained control over all aspects of
+kernel networking and represents the scope of features required by OPI.
+
+#+begin_src dot :file classic-offload.png :tangle classic-offload.txt :exports results
+digraph classic_offload {
+        app [shape=box]
+        kernel [shape=box]
+
+        app -> kernel [label="netlink"]
+}
+#+end_src
+
+#+RESULTS:
+[[file:classic-offload.png]]
