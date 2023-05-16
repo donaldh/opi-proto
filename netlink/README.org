@@ -4,13 +4,28 @@ All Linux user space applications use netlink messages, either directly or indir
 program the kernel networking stack. Netlink provides fine-grained control over all aspects of
 kernel networking and represents the scope of features required by OPI.
 
-#+begin_src dot :file classic-offload.png :tangle classic-offload.txt :exports results
-digraph classic_offload {
-        app [shape=box]
-        kernel [shape=box]
+** Classic hardware offload
 
-        app -> kernel [label="netlink"]
-}
+In the classical hardware offload approach, the driver must implement all offloads via the
+~ndo_setup_tc~ hook in ~struct net_device_ops~, defined in [[https://elixir.bootlin.com/linux/latest/source/include/linux/netdevice.h#L1493][include/linux/netdevice.h]].
+
+#+begin_src dot :file "classic_offload.png" :exports results
+ digraph classic_offload {
+        fontname="Arial"
+        node [fontname="Arial"]
+        edge [fontname="SF Mono"]
+
+        app [shape=box]
+        subgraph cluster_kernel {
+                label = "kernel";
+                tc [shape=box]
+                driver [shape=box]
+        }
+
+        app -> tc [label="netlink"]
+        tc -> driver [label="ops->ndo_setup_tc(...)"]
+        driver -> nic
+ }
 #+end_src
 
 #+RESULTS:
