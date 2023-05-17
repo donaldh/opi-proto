@@ -30,3 +30,50 @@ In the classical hardware offload approach, the driver must implement all offloa
 
 #+RESULTS:
 [[file:classic-offload.png]]
+
+** Mirroring kernel networking state
+
+DPU hardware could offload more than the existing capabilities that are supported by the
+~ndo_setup_tc~ hook. For example routing tables could be mirrored to the DPU to allow for
+hardware-accelerated route based forwarding. This could be done by using a netlink listener
+consuming netlink notifications and using an out-of-band mechanism to program the equivalent
+state on the DPU hardware.
+
+#+begin_src dot :file mirror_state.png :exports results
+ digraph mirror_state {
+        fontname="Arial"
+        node [fontname="Arial"]
+        edge [fontname="Arial"]
+
+
+        subgraph user_space {
+                app [shape=box]
+                listener [shape=box]
+                rank = same;
+        }
+        subgraph cluster_kernel {
+                label = "kernel"
+                labeljust = "l"
+                tc [shape=box; label="tc / rtnl"]
+                driver [shape=box]
+        }
+
+        app -> tc [label="netlink"]
+        tc -> listener [label="notify"]
+        tc -> driver [
+           label="ops->ndo_setup_tc(...)";
+ #           labeldistance=10;
+ #          labelangle=75;
+ #          fontname="SF Mono"
+            ]
+        driver -> nic
+
+        listener -> nic [label="oob programming"]
+
+        edge[style=invis]
+        listener->tc->driver->nic
+ }
+#+end_src
+
+#+RESULTS:
+[[file:mirror_state.png]]
