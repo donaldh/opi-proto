@@ -77,3 +77,50 @@ state on the DPU hardware.
 
 #+RESULTS:
 [[file:mirror_state.png]]
+
+** Extending offloads with BPF
+
+It might be possible to use BPF ~struct_ops~ to provide a way to extend offload capabilities
+without driver development work.
+
+#+begin_src dot :file bpf_enablement.png :exports results
+ digraph mirror_state {
+        fontname="Arial"
+        node [fontname="Arial"]
+        edge [fontname="Arial"]
+
+
+        subgraph user_space {
+                app [shape=box]
+                listener [shape=box label="User space helper"]
+                rank = same;
+        }
+        subgraph cluster_kernel {
+                label = "kernel"
+                labeljust = "l"
+                tc [shape=box; label="tc / rtnl"]
+                driver [shape=box]
+                bpf [shape=box label="BPF prog"]
+                map [shape=box]
+                {rank = same; driver; bpf; map;}
+        }
+
+        app -> tc [label="netlink"]
+        bpf -> listener [label="ringbuf"]
+        tc -> driver [label="ops->ndo_setup_tc(...)"]
+        driver -> nic
+        driver -> bpf
+        bpf -> map
+
+        listener -> nic [label="oob programming"]
+
+        edge[style=invis]
+        listener->tc->bpf->nic
+        driver->bpf->map
+        app->listener
+
+ }
+#+end_src
+
+#+RESULTS:
+[[file:bpf_enablement.png]]
