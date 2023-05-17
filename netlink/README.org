@@ -13,7 +13,7 @@ In the classical hardware offload approach, the driver must implement all offloa
  digraph classic_offload {
         fontname="Arial"
         node [fontname="Arial"]
-        edge [fontname="SF Mono"]
+        edge [fontname="Arial"]
 
         app [shape=box]
         subgraph cluster_kernel {
@@ -29,7 +29,7 @@ In the classical hardware offload approach, the driver must implement all offloa
 #+end_src
 
 #+RESULTS:
-[[file:classic-offload.png]]
+[[file:classic_offload.png]]
 
 ** Mirroring kernel networking state
 
