@@ -45,7 +45,6 @@ state on the DPU hardware.
         node [fontname="Arial"]
         edge [fontname="Arial"]
 
-
         subgraph user_space {
                 app [shape=box]
                 listener [shape=box]
@@ -60,12 +59,7 @@ state on the DPU hardware.
 
         app -> tc [label="netlink"]
         tc -> listener [label="notify"]
-        tc -> driver [
-           label="ops->ndo_setup_tc(...)";
- #           labeldistance=10;
- #          labelangle=75;
- #          fontname="SF Mono"
-            ]
+        tc -> driver [label="ops->ndo_setup_tc(...)"]
         driver -> nic
 
         listener -> nic [label="oob programming"]
@@ -88,7 +82,6 @@ without driver development work.
         fontname="Arial"
         node [fontname="Arial"]
         edge [fontname="Arial"]
-
 
         subgraph user_space {
                 app [shape=box]
