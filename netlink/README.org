@@ -77,7 +77,7 @@ state on the DPU hardware.
 It might be possible to use BPF ~struct_ops~ to provide a way to extend offload capabilities
 without driver development work.
 
-#+begin_src dot :file bpf_enablement.png :exports results
+#+begin_src dot :file bpf_enablement.png :tangle bpf_enablement.txt :exports results
  digraph mirror_state {
         fontname="Arial"
         node [fontname="Arial"]
@@ -117,3 +117,79 @@ without driver development work.
 
 #+RESULTS:
 [[file:bpf_enablement.png]]
+
+** Switchdev offloads with BPF
+
+This diagram shows roughly what Anton has prototyped for switchdev notifier offloads.
+
+Each of the switchdev notifier types could be handled by:
+1. A driver dispatching them to a registered BPF program
+2. The BPF program sending them on a ringbuf to userspace
+
+#+begin_src C
+enum switchdev_notifier_type {
+	SWITCHDEV_FDB_ADD_TO_BRIDGE = 1,
+	SWITCHDEV_FDB_DEL_TO_BRIDGE,
+	SWITCHDEV_FDB_ADD_TO_DEVICE,
+	SWITCHDEV_FDB_DEL_TO_DEVICE,
+	SWITCHDEV_FDB_OFFLOADED,
+	SWITCHDEV_FDB_FLUSH_TO_BRIDGE,
+
+	SWITCHDEV_PORT_OBJ_ADD, /* Blocking. */
+	SWITCHDEV_PORT_OBJ_DEL, /* Blocking. */
+	SWITCHDEV_PORT_ATTR_SET, /* May be blocking . */
+
+	SWITCHDEV_VXLAN_FDB_ADD_TO_BRIDGE,
+	SWITCHDEV_VXLAN_FDB_DEL_TO_BRIDGE,
+	SWITCHDEV_VXLAN_FDB_ADD_TO_DEVICE,
+	SWITCHDEV_VXLAN_FDB_DEL_TO_DEVICE,
+	SWITCHDEV_VXLAN_FDB_OFFLOADED,
+
+	SWITCHDEV_BRPORT_OFFLOADED,
+	SWITCHDEV_BRPORT_UNOFFLOADED,
+};
+#+end_src
+
+
+#+begin_src dot :file switchdev_offload.png :tangle switchdev_offload.txt :exports results
+ digraph switchdev {
+        fontname="Arial"
+        node [fontname="Arial"]
+        edge [fontname="Arial"]
+
+        subgraph user_space {
+                app [shape=box]
+                listener [shape=box label="User space helper\nw/ vendor libraries"]
+                rank = same;
+        }
+        subgraph cluster_kernel {
+                label = "kernel"
+                labeljust = "l"
+                bridge [shape=box; label="bridge"]
+                ringbuf
+                {rank = same; bridge; ringbuf}
+                driver [shape=box label="driver\nw/ struct_ops BPF progs"]
+                bpf [shape=box label="BPF prog"]
+                map [shape=box]
+                {rank = same; driver; bpf; map;}
+        }
+
+        app -> bridge [label="netlink"]
+        bpf -> ringbuf -> listener
+        bridge -> driver [label="nb->notifier_call(...)"]
+        driver -> nic [label="traditional\nprogramming path"]
+        driver -> bpf
+        bpf -> map
+
+        listener -> nic [label="out of band\nprogramming" style=dashed]
+
+        edge[style=invis]
+        listener->bridge->bpf->nic
+        driver->bpf->map
+        app->listener
+
+ }
+#+end_src
+
+#+RESULTS:
+[[file:switchdev_offload.png]]
