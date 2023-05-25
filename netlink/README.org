@@ -96,8 +96,8 @@ without driver development work.
                 {rank = same; tc; ringbuf}
                 driver [shape=box]
                 bpf [shape=box label="BPF prog"]
-                map [shape=box]
-                {rank = same; driver; bpf; map;}
+                maps [shape=note]
+                {rank = same; driver; bpf; maps;}
         }
 
         app -> tc [label="netlink"]
@@ -105,13 +105,13 @@ without driver development work.
         tc -> driver [label="ops->ndo_setup_tc(...)"]
         driver -> nic
         driver -> bpf
-        bpf -> map
+        bpf -> maps
 
         listener -> nic [label="out of band\nprogramming" style=dashed]
 
         edge[style=invis]
         listener->tc->bpf->nic
-        driver->bpf->map
+        driver->bpf->maps
         app->listener
 
  }
@@ -172,8 +172,8 @@ enum switchdev_notifier_type {
                 {rank = same; bridge; ringbuf}
                 driver [shape=box label="driver\nw/ struct_ops BPF progs"]
                 bpf [shape=box label="BPF prog"]
-                map [shape=box]
-                {rank = same; driver; bpf; map;}
+                maps [shape=note]
+                {rank = same; driver; bpf; maps;}
         }
 
         app -> bridge [label="netlink"]
@@ -181,13 +181,13 @@ enum switchdev_notifier_type {
         bridge -> driver [label="nb->notifier_call(...)"]
         driver -> nic [label="traditional\nprogramming path"]
         driver -> bpf
-        bpf -> map
+        bpf -> maps
 
         listener -> nic [label="out of band\nprogramming" style=dashed]
 
         edge[style=invis]
         listener->bridge->bpf->nic
-        driver->bpf->map
+        driver->bpf->maps
         app->listener
 
  }
