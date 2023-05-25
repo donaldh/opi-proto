@@ -58,7 +58,7 @@ state on the DPU hardware.
         }
 
         app -> tc [label="netlink"]
-        tc -> listener [label="notify"]
+        listener -> tc [label="notify"; dir=back]
         tc -> driver [label="ops->ndo_setup_tc(...)"]
         driver -> nic
 
@@ -108,6 +108,7 @@ without driver development work.
         bpf -> maps
 
         listener -> nic [label="out of band\nprogramming" style=dashed]
+        listener -> maps [style=dashed; dir=back]
 
         edge[style=invis]
         listener->tc->bpf->nic
@@ -184,6 +185,7 @@ enum switchdev_notifier_type {
         bpf -> maps
 
         listener -> nic [label="out of band\nprogramming" style=dashed]
+        listener -> maps [style=dashed; dir=back]
 
         edge[style=invis]
         listener->bridge->bpf->nic
