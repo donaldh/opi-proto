@@ -4,6 +4,44 @@ All Linux user space applications use netlink messages, either directly or indir
 program the kernel networking stack. Netlink provides fine-grained control over all aspects of
 kernel networking and represents the scope of features required by OPI.
 
+** Netlink
+
+Netlink is the configuration interface of the kernel networking stack. All user space
+applications use AF_NETLINK socket message to configure the kernel networking state and to
+receive notifications of changes made by other applications.
+
+#+begin_src dot :file netlink.png :exports results
+ digraph netlink {
+        fontname="Arial"
+        node [fontname="Arial"]
+        edge [fontname="Arial"]
+
+        subgraph user_space {
+                app [shape=box label="app ..."]
+                listener [shape=box label="listener ..."]
+                rank = same;
+        }
+        subgraph cluster_kernel {
+                label = "kernel"
+                labeljust = "l"
+                rtnl [shape=box label="route / link / addr"]
+                netfilter [shape=box]
+                ovs [shape=box]
+                rank = same;
+        }
+
+        app -> rtnl [label="netlink"]
+        app -> netfilter
+        app -> ovs
+        listener -> rtnl [dir=back]
+        listener -> netfilter [dir=back]
+        listener -> ovs [label="netlink\nnotify"; dir=back]
+ }
+#+end_src
+
+#+RESULTS:
+[[file:netlink.png]]
+
 ** Classic hardware offload
 
 In the classical hardware offload approach, the driver must implement all offloads via the
