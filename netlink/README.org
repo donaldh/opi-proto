@@ -192,6 +192,7 @@ enum switchdev_notifier_type {
 #+begin_src dot :file switchdev_offload.png :tangle switchdev_offload.txt :exports results
  digraph switchdev {
         fontname="Arial"
+        nodesep=0.75
         node [fontname="Arial"]
         edge [fontname="Arial"]
 
@@ -206,7 +207,7 @@ enum switchdev_notifier_type {
                 bridge [shape=box; label="bridge"]
                 ringbuf
                 {rank = same; bridge; ringbuf}
-                driver [shape=box label="driver\nw/ struct_ops BPF progs"]
+                driver [shape=box label="driver(s)\nw/ struct_ops BPF progs"]
                 bpf [shape=box label="BPF prog"]
                 maps [shape=note]
                 {rank = same; driver; bpf; maps;}
@@ -214,7 +215,8 @@ enum switchdev_notifier_type {
 
         app -> bridge [label="netlink"]
         listener -> ringbuf -> bpf [dir=back]
-        bridge -> driver [label="nb->notifier_call(...)"]
+        bridge -> driver [dir=back label="MAC/VLAN learning\ncall_switchdev_notifiers\n(*_TO_BRIDGE)"]
+        bridge -> driver [label="call_switchdev_notifiers\n(*_TO_DEVICE)"]
         driver -> nic [label="traditional\nprogramming path"]
         driver -> bpf
         bpf -> maps
