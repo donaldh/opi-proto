@@ -247,3 +247,41 @@ enum fib_event_type {
 	FIB_EVENT_VIF_DEL,
 };
 #+end_src
+
+** Stats collection with BPF
+
+#+begin_src dot :file stats_offload.png :tangle stats_offload.txt :exports results
+ digraph stats_offload {
+        fontname="Arial"
+        nodesep=0.75
+        node [fontname="Arial"]
+        edge [fontname="Arial"]
+
+        subgraph user_space {
+                app [shape=box]
+                listener [shape=box label="User space helper\nw/ vendor libraries"]
+                rank = same;
+        }
+        subgraph cluster_kernel {
+                label = "kernel"
+                labeljust = "l"
+                rtnl [shape=box; label="rtnl / ovs"]
+                driver [shape=box label="driver(s)\nw/ struct_ops BPF progs"]
+                bpf [shape=box label="BPF prog"]
+                maps [shape=note]
+                {rank = same; driver; bpf; maps;}
+        }
+
+        app -> rtnl [label="netlink dump (stats)"]
+        rtnl -> driver [label="flow_offload\n(FLOW_CLS_STATS)"]
+        driver -> nic [label="traditional\nstats path"; dir=back; style=dashed]
+        driver -> bpf
+        bpf -> maps [label="read stats" style=dashed]
+
+        listener -> nic [label="out of band\nstats collection" dir=back]
+        listener -> maps [label="write stats"]
+ }
+#+end_src
+
+#+RESULTS:
+[[file:stats_offload.png]]
